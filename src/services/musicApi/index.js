@@ -34,7 +34,7 @@ export const searchPlaylists = async (temp) => {
 
     try {
         const response = await musicApi.get(`/track?listId=${genreId}`);
-        const {tracks} = response.data;
+        const tracks = response.data.tracks?.map(track => { return {key: track.key, title: track.title, subtitle: track.subtitle, url: track.url, images: track.images}})
         return { genre, tracks };
     } catch (error){
         throw error;

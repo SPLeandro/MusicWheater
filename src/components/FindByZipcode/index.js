@@ -5,16 +5,22 @@ import { getWheaterByZipCode, searchPlaylists } from '../../services';
 
 export const FindByZipcode = () => {
 
-    const {setPlaylist} = useMusic();
+    const {setLastSearch} = useMusic();
 
     const [zipcode, setZipcode] = useState('');
     
     const handleSubmit = async (zipcode) => {
         try {
             const wheaterData = await getWheaterByZipCode(zipcode);
+            const {name: city} = wheaterData;
             const {temp} = wheaterData.main;
-            const playlists = await searchPlaylists(temp);
-            setPlaylist(playlists.tracks);
+            const playlist = await searchPlaylists(temp);
+            setLastSearch({
+                searchDate: Date.now(),
+                temp,
+                city,
+                ...playlist
+            }); 
         } catch (error) {
             console.log(error);
         }

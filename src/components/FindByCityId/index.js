@@ -5,16 +5,22 @@ import { getWheaterByCityId, searchPlaylists } from '../../services';
 
 export const FindByCityId = () => {
 
-    const {setPlaylist} = useMusic();
+    const {setLastSearch} = useMusic();
 
     const [cityId, setCityId] = useState('');
 
     const handleSubmit = async (cityId) => {
         try {
             const wheaterData = await getWheaterByCityId(cityId);
+            const {name: city} = wheaterData;
             const {temp} = wheaterData.main;
-            const playlists = await searchPlaylists(temp);
-            setPlaylist(playlists.tracks);
+            const playlist = await searchPlaylists(temp);
+            setLastSearch({
+                searchDate: Date.now(),
+                temp,
+                city,
+                ...playlist
+            }); 
         } catch (error){
             console.log(error);
         }

@@ -5,7 +5,7 @@ import { getWheaterByGeoCoords, searchPlaylists } from '../../services';
 
 export const FindByCoords = () => {
 
-    const {setPlaylist} = useMusic();
+    const {setLastSearch} = useMusic();
 
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
@@ -13,9 +13,15 @@ export const FindByCoords = () => {
     const handleSubmit = async (lat, long) => {
         try {
             const wheaterData = await getWheaterByGeoCoords(lat, long);
+            const {name: city} = wheaterData;
             const {temp} = wheaterData.main;
-            const playlists = await searchPlaylists(temp);
-            setPlaylist(playlists.tracks);
+            const playlist = await searchPlaylists(temp);
+            setLastSearch({
+                searchDate: Date.now(),
+                temp,
+                city,
+                ...playlist
+            }); 
         } catch (error){
             console.log(error);
         }

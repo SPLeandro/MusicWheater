@@ -5,9 +5,9 @@ import { useMusic } from '../../providers';
 
 export const MusicList = () => {
 
-    const {playlist} = useMusic();
+    const {lastSearch, handleSavePlaylist} = useMusic();
 
-    if (playlist.length < 1){
+    if (lastSearch.tracks.length < 1){
         return (
             <Text>Faça uma busca para encontrar sugestões.</Text>
         )
@@ -18,7 +18,7 @@ export const MusicList = () => {
             <Box p={2}>
                 <List spacing={2}>
                     <Heading fontSize="md">Playlist sugerida</Heading>
-                    {playlist.map(track => (
+                    {lastSearch.tracks.map(track => (
                         <ListItem key={track.key}>
                             <Flex justifyContent="space-between" alignItems="center">
                                 <HStack spacing={2} mr={8}>
@@ -41,7 +41,7 @@ export const MusicList = () => {
                         </ListItem>
                     ))}
                     <Center>
-                        <Button colorScheme="blue" onClick={() => {}}>
+                        <Button colorScheme="blue" onClick={() => handleSavePlaylist()}>
                             Salvar Playlist
                         </Button>
                     </Center>
