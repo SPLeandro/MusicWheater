@@ -1,5 +1,6 @@
-import { Flex, Box, Tabs, TabList, TabPanels, Tab, TabPanel, Heading, Text } from "@chakra-ui/react"
+import { Flex, Box, Tabs, TabList, TabPanels, Tab, TabPanel, Divider, Heading, Text } from "@chakra-ui/react"
 import {FindByCityName, FindByCityId, FindByCoords, FindByZipcode} from '../src/components';
+import { MusicList } from '../src/components';
 
 export default function Home() {
   return (
@@ -35,6 +36,10 @@ export default function Home() {
               </TabPanel>
             </TabPanels>
         </Tabs>
+      </Box>
+      <Divider />
+      <Box>
+        <MusicList />
       </Box>
     </Flex>
   )

@@ -1,9 +1,12 @@
 import { ChakraProvider } from "@chakra-ui/react"
+import { MusicProvider } from '../src/providers';
 
 function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider>
-      <Component {...pageProps} />
+      <MusicProvider>
+        <Component {...pageProps} />
+      </MusicProvider>
     </ChakraProvider>
   )  
 }

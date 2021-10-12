@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
 import { VStack, FormControl, FormLabel, InputGroup, Input, InputLeftAddon, Button } from "@chakra-ui/react";
-import { getWheaterByGeoCoords } from '../../services';   
+import { useMusic } from "../../providers";
+import { getWheaterByGeoCoords, searchPlaylists } from '../../services';   
 
 export const FindByCoords = () => {
+
+    const {setPlaylist} = useMusic();
 
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
@@ -11,7 +14,8 @@ export const FindByCoords = () => {
         try {
             const wheaterData = await getWheaterByGeoCoords(lat, long);
             const {temp} = wheaterData.main;
-            console.log(temp);
+            const playlists = await searchPlaylists(temp);
+            setPlaylist(playlists.tracks);
         } catch (error){
             console.log(error);
         }

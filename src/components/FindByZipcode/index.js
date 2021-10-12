@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
 import { VStack, FormControl, FormLabel, Input, Button } from "@chakra-ui/react"
-import { getWheaterByZipCode } from '../../services';
+import { useMusic } from "../../providers";
+import { getWheaterByZipCode, searchPlaylists } from '../../services';
 
 export const FindByZipcode = () => {
+
+    const {setPlaylist} = useMusic();
 
     const [zipcode, setZipcode] = useState('');
     
@@ -10,7 +13,8 @@ export const FindByZipcode = () => {
         try {
             const wheaterData = await getWheaterByZipCode(zipcode);
             const {temp} = wheaterData.main;
-            console.log(temp);
+            const playlists = await searchPlaylists(temp);
+            setPlaylist(playlists.tracks);
         } catch (error) {
             console.log(error);
         }
