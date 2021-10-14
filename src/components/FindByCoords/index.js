@@ -33,7 +33,7 @@ export const FindByCoords = () => {
             <FormControl id="lat" isRequired>
                 <FormLabel>Latitude</FormLabel>
                 <InputGroup>
-                    <InputLeftAddon children="Y" />
+                    <InputLeftAddon> Y </InputLeftAddon>
                     <Input 
                         type="text"
                         placeholder="Ex: 40.77441100"
@@ -45,7 +45,7 @@ export const FindByCoords = () => {
             <FormControl id="long" isRequired>
                 <FormLabel>Longitude</FormLabel>
                 <InputGroup>
-                    <InputLeftAddon children="X" />
+                <InputLeftAddon> X </InputLeftAddon>
                     <Input 
                         type="text"
                         placeholder="Ex: -73.97951000"
