@@ -16,7 +16,7 @@ export const FindByCityId = () => {
             const {temp} = wheaterData.main;
             const playlist = await searchPlaylists(temp);
             setLastSearch({
-                searchDate: Date.now(),
+                searchDate: new Date().toISOString(),
                 temp,
                 city,
                 ...playlist
