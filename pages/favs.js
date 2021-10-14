@@ -10,8 +10,9 @@ export default function Favs(){
     const [savedPlaylists, setSavedPlaylists] = useState(null);
 
     const getSavedPlaylist = () => {
-        let savedPlaylists = JSON.parse(localStorage.getItem('@music-wheater/saved-playlists'));   
-        const originalPlaylists = savedPlaylists;
+        const getedSavedPlaylists = localStorage.getItem('@music-wheater/saved-playlists'); 
+        const originalSavedPlaylists = JSON.parse(getedSavedPlaylists);  
+        let savedPlaylists = JSON.parse(getedSavedPlaylists);
 
         if (!savedPlaylists){
             savedPlaylists = null;
@@ -26,8 +27,7 @@ export default function Favs(){
             return playlist.searchDate = parsedDate;
         });      
         dates.sort().reverse();
-        
-        const orderedByDate = dates.map(date => originalPlaylists.filter(playlist => playlist.searchDate.includes(date)));
+        const orderedByDate = dates.map(date => originalSavedPlaylists.filter(playlist => playlist.searchDate.includes(date)));
         setSavedPlaylists(orderedByDate);
     }
 
