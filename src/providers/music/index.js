@@ -13,14 +13,14 @@ export const MusicProvider = ({children}) => {
         tracks: []
     });
 
-    const handleSavePlaylist = async () => {
+    const savePlaylist = async () => {
         let savedPlaylists = localStorage.getItem('@music-wheater/saved-playlists');
         savedPlaylists ? savedPlaylists = JSON.parse(savedPlaylists) : savedPlaylists = [];
         const playlistsData = [...savedPlaylists, lastSearch];
         localStorage.setItem('@music-wheater/saved-playlists', JSON.stringify(playlistsData));
     }
 
-    const handleRemovePlaylist = async (playlist) => {
+    const removePlaylist = async (playlist) => {
         let savedPlaylists = JSON.parse(localStorage.getItem('@music-wheater/saved-playlists'));
         const playlistIndex = savedPlaylists.findIndex(({searchDate, city, temp}) => (searchDate == playlist.searchDate && city == playlist.city && temp == playlist.temp));  
         savedPlaylists.splice(playlistIndex, 1);
@@ -29,7 +29,7 @@ export const MusicProvider = ({children}) => {
     }
 
     return (
-        <MusicContext.Provider value={{lastSearch, setLastSearch, handleSavePlaylist, handleRemovePlaylist, reloadSavedPlaylist}}>
+        <MusicContext.Provider value={{lastSearch, setLastSearch, savePlaylist, removePlaylist, reloadSavedPlaylist}}>
             {children}
         </MusicContext.Provider>
     )

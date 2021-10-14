@@ -7,10 +7,12 @@ export const FindByCityId = () => {
 
     const {setLastSearch} = useMusic();
 
+    const [loading, setLoading] = useState(false);
     const [cityId, setCityId] = useState('');
 
     const handleSubmit = async (cityId) => {
         try {
+            setLoading(prevState => !prevState);
             const wheaterData = await getWheaterByCityId(cityId);
             const {name: city} = wheaterData;
             const {temp} = wheaterData.main;
@@ -23,6 +25,8 @@ export const FindByCityId = () => {
             }); 
         } catch (error){
             console.log(error);
+        } finally {
+            setLoading(prevState => !prevState);
         }
     }
 
@@ -36,7 +40,7 @@ export const FindByCityId = () => {
                     value={cityId} onChange={e => setCityId(e.target.value)} 
                 />
             </FormControl>
-            <Button colorScheme="blue" width="100%" onClick={() => handleSubmit(cityId)}>
+            <Button isLoading={loading} colorScheme="blue" width="100%" onClick={() => handleSubmit(cityId)}>
                 Buscar
             </Button>
         </VStack>

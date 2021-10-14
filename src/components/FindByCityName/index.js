@@ -7,12 +7,14 @@ export const FindByCityName = () => {
 
   const {setLastSearch} = useMusic();
 
+  const [loading, setLoading] = useState(false);
   const [cityName, setCityName] = useState('');
   const [cityUf, setCityUf] = useState('');
   const [countryCode, setCountryCode] = useState('');
 
   const handleSubmit = async (cityName, cityUf, countryCode) => {
     try {
+      setLoading(prevState => !prevState);
       const wheaterData = await getWheaterByCityName(cityName, cityUf, countryCode);
       const {name: city} = wheaterData;
       const {temp} = wheaterData.main;
@@ -25,6 +27,8 @@ export const FindByCityName = () => {
       }); 
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(prevState => !prevState);
     }
   }
 
@@ -59,7 +63,7 @@ export const FindByCityName = () => {
         </FormControl>
       </HStack>
 
-      <Button colorScheme="blue" width="100%" onClick={() => handleSubmit(cityName, cityUf, countryCode)}>
+      <Button isLoading={loading} colorScheme="blue" width="100%" onClick={() => handleSubmit(cityName, cityUf, countryCode)}>
         Buscar
       </Button>
     </VStack>

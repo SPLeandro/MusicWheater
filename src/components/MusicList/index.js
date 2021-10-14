@@ -1,11 +1,23 @@
-import React from'react';
+import React, {useState} from'react';
 import { Center, Box, List, ListItem, Button, Heading, Text } from '@chakra-ui/react';
 import { useMusic } from '../../providers';
 import { MusicItem } from '../MusicItem';
 
 export const MusicList = () => {
 
-    const {lastSearch, handleSavePlaylist} = useMusic();
+    const [loading, setLoading] = useState(false);
+    const {lastSearch, savePlaylist} = useMusic();
+
+    const handleSavePlaylist = async () => {
+        try {
+            setLoading(prevState => !prevState);
+            await savePlaylist();
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(prevState => !prevState);
+        }
+    }
 
     if (lastSearch.tracks.length < 1){
         return (
@@ -24,7 +36,7 @@ export const MusicList = () => {
                         </ListItem>
                     ))}
                     <Center>
-                        <Button colorScheme="blue" onClick={() => handleSavePlaylist()}>
+                        <Button isLoading={loading} colorScheme="blue" onClick={() => handleSavePlaylist()}>
                             Salvar Playlist
                         </Button>
                     </Center>

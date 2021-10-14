@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, VStack, Divider, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Heading, Text, Button } from '@chakra-ui/react';
 import { MusicItem } from '../MusicItem';
 import { useMusic  } from '../../providers';
 
 export const DatePlaylist = ({date}) => {
 
-    const {handleRemovePlaylist} = useMusic();
+    const [loading, setLoading] = useState(false);
+    const {removePlaylist} = useMusic();
+
+    const handleRemovePlaylist = async (playlist) => {
+        try {
+            setLoading(prevState => !prevState);
+            await removePlaylist(playlist);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(prevState => !prevState);
+        }
+    }
 
     return (
         <Accordion defaultIndex={[]} allowMultiple>
@@ -23,7 +35,7 @@ export const DatePlaylist = ({date}) => {
                                 <Text>Cidade: {playlist.city}</Text>
                                 <Text>Temperatura: {playlist.temp} ºC</Text>
                                 <Text>Categoria: {playlist.genre}</Text>
-                                <Button size="sm" alignSelf="center" colorScheme="red" onClick={() => handleRemovePlaylist(playlist)}>
+                                <Button isLoading={loading} size="sm" alignSelf="center" colorScheme="red" onClick={() => handleRemovePlaylist(playlist)}>
                                     Apagar Playlist
                                 </Button>
                             </VStack>

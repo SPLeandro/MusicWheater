@@ -7,14 +7,15 @@ export const FindByCoords = () => {
 
     const {setLastSearch} = useMusic();
 
+    const [loading, setLoading] = useState(false);
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
 
     const handleSubmit = async (lat, long) => {
         try {
+            setLoading(prevState => !prevState);
             const wheaterData = await getWheaterByGeoCoords(lat, long);
             const {name: city} = wheaterData;
-            console.log(wheaterData);
             const {temp} = wheaterData.main;
             const playlist = await searchPlaylists(temp);
             setLastSearch({
@@ -25,6 +26,8 @@ export const FindByCoords = () => {
             }); 
         } catch (error){
             console.log(error);
+        } finally {
+            setLoading(prevState => !prevState);
         }
     }
 
@@ -53,7 +56,7 @@ export const FindByCoords = () => {
                     />
                 </InputGroup>
             </FormControl>
-            <Button colorScheme="blue" width="100%" onClick={() => handleSubmit(latitude, longitude)}>
+            <Button isLoading={loading} colorScheme="blue" width="100%" onClick={() => handleSubmit(latitude, longitude)}>
                 Buscar
             </Button>
         </VStack>

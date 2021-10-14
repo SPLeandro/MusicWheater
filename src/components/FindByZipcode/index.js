@@ -7,10 +7,12 @@ export const FindByZipcode = () => {
 
     const {setLastSearch} = useMusic();
 
+    const [loading, setLoading] = useState(false);
     const [zipcode, setZipcode] = useState('');
     
     const handleSubmit = async (zipcode) => {
         try {
+            setLoading(prevState => !prevState);
             const wheaterData = await getWheaterByZipCode(zipcode);
             const {name: city} = wheaterData;
             const {temp} = wheaterData.main;
@@ -22,7 +24,9 @@ export const FindByZipcode = () => {
                 ...playlist
             }); 
         } catch (error) {
-            console.log(error);
+            console.log(error)
+        } finally {
+            setLoading(prevState => !prevState);
         }
     }
 
@@ -36,7 +40,7 @@ export const FindByZipcode = () => {
                     value={zipcode} onChange={e => setZipcode(e.target.value)} 
                 />
             </FormControl>
-            <Button colorScheme="blue" width="100%" onClick={() => handleSubmit(zipcode)}>
+            <Button isLoading={loading} colorScheme="blue" width="100%" onClick={() => handleSubmit(zipcode)}>
                 Buscar
             </Button>
         </VStack>  
