@@ -4,3 +4,4 @@ export * from './FindByCoords';
 export * from './FindByZipcode';
 export * from './MusicList';
 export * from './MusicItem';
+export * from './DatePlaylist';

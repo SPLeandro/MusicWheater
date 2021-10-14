@@ -1,49 +1,23 @@
 import React, {useState, useEffect } from 'react';
-import { Center, Flex, Box, VStack, Divider, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Heading, Text, Link} from '@chakra-ui/react';
+import { Center, Flex, Box, VStack, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Heading, Text, Link} from '@chakra-ui/react';
 import { MdArrowBack } from 'react-icons/md';
-import {MusicItem} from '../src/components';
-
-const DatePlaylist = ({date}) => (
-    <Accordion defaultIndex={[]} allowMultiple>
-        {date.map((playlist, index) => {
-            return (
-                <AccordionItem key={index}>
-                    <AccordionButton>
-                        <Box flex="1" textAlign="left">
-                            {index + 1} - {playlist.city == '' ? 'Unknow' : playlist.city}
-                        </Box>
-                        <AccordionIcon />
-                    </AccordionButton>
-                    <AccordionPanel>
-                        <Text>Cidade: {playlist.city}</Text>
-                        <Text>Temperatura: {playlist.temp} ºC</Text>
-                        <Text>Categoria: {playlist.genre}</Text>
-                        <Divider my={2} />
-                        <VStack spacing={2}>
-                            <Heading fontSize="md">Playlist salva</Heading>
-                            {playlist.tracks.map(track => (
-                                <MusicItem track={track} key={track.key} />
-                            ))}
-                        </VStack>
-                    </AccordionPanel>
-                </AccordionItem>
-            )
-        })}
-    </Accordion>
-);
+import { DatePlaylist } from '../src/components';
+import { useMusic } from '../src/providers';
 
 export default function Favs(){
 
+    const { reloadSavedPlaylist } = useMusic();
     const [savedPlaylists, setSavedPlaylists] = useState(null);
 
     const getSavedPlaylist = () => {
-        let savedPlaylists = localStorage.getItem('@music-wheater/saved-playlists');   
+        let savedPlaylists = JSON.parse(localStorage.getItem('@music-wheater/saved-playlists'));   
+        const originalPlaylists = savedPlaylists;
+
         if (!savedPlaylists){
             savedPlaylists = null;
             return
         }
 
-        savedPlaylists = JSON.parse(savedPlaylists);
         //GET ARRAY DATES AND FORMAT DATE TO YYYY-MM-DD;
         let dates = []; 
         savedPlaylists.map(playlist => {
@@ -52,13 +26,14 @@ export default function Favs(){
             return playlist.searchDate = parsedDate;
         });      
         dates.sort().reverse();
-        const orderedByDate = dates.map(date => savedPlaylists.filter(playlist => playlist.searchDate === date));
+        
+        const orderedByDate = dates.map(date => originalPlaylists.filter(playlist => playlist.searchDate.includes(date)));
         setSavedPlaylists(orderedByDate);
     }
 
     useEffect(()=> {
         getSavedPlaylist();
-    },[]);
+    },[reloadSavedPlaylist]);
 
     if (savedPlaylists == null) {   
         return (
