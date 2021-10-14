@@ -14,18 +14,27 @@ export const MusicProvider = ({children}) => {
     });
 
     const savePlaylist = async () => {
-        let savedPlaylists = localStorage.getItem('@music-wheater/saved-playlists');
-        savedPlaylists ? savedPlaylists = JSON.parse(savedPlaylists) : savedPlaylists = [];
-        const playlistsData = [...savedPlaylists, lastSearch];
-        localStorage.setItem('@music-wheater/saved-playlists', JSON.stringify(playlistsData));
+        try{
+            let savedPlaylists = localStorage.getItem('@music-wheater/saved-playlists');
+            savedPlaylists ? savedPlaylists = JSON.parse(savedPlaylists) : savedPlaylists = [];
+            const playlistsData = [...savedPlaylists, lastSearch];
+            localStorage.setItem('@music-wheater/saved-playlists', JSON.stringify(playlistsData));
+        } catch (error){
+            throw error;
+        }
     }
 
     const removePlaylist = async (playlist) => {
-        let savedPlaylists = JSON.parse(localStorage.getItem('@music-wheater/saved-playlists'));
-        const playlistIndex = savedPlaylists.findIndex(({searchDate, city, temp}) => (searchDate == playlist.searchDate && city == playlist.city && temp == playlist.temp));  
-        savedPlaylists.splice(playlistIndex, 1);
-        localStorage.setItem('@music-wheater/saved-playlists', JSON.stringify(savedPlaylists));
-        setReloadSavedPlaylist(prevState => !prevState);
+        try{
+            let savedPlaylists = JSON.parse(localStorage.getItem('@music-wheater/saved-playlists'));
+            const playlistIndex = savedPlaylists.findIndex(({searchDate, city, temp}) => (searchDate == playlist.searchDate && city == playlist.city && temp == playlist.temp));  
+            if(playlistIndex == -1) throw { cod: 404, message: 'Playlist not exists or already been deleted'};
+            savedPlaylists.splice(playlistIndex, 1);
+            localStorage.setItem('@music-wheater/saved-playlists', JSON.stringify(savedPlaylists));
+            setReloadSavedPlaylist(prevState => !prevState);
+        } catch (error){
+            throw error;
+        }
     }
 
     return (

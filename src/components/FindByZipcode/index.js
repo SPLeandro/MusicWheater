@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import { VStack, FormControl, FormLabel, Input, Button } from "@chakra-ui/react"
+import { VStack, FormControl, FormLabel, Input, Button, useToast } from "@chakra-ui/react"
 import { useMusic } from "../../providers";
 import { getWheaterByZipCode, searchPlaylists } from '../../services';
 
 export const FindByZipcode = () => {
 
+    const toast = useToast();
     const {setLastSearch} = useMusic();
 
     const [loading, setLoading] = useState(false);
@@ -24,7 +25,14 @@ export const FindByZipcode = () => {
                 ...playlist
             }); 
         } catch (error) {
-            console.log(error)
+            toast({
+                title: 'Houve um problema',
+                description: error.message || 'Erro não especificado',
+                position: 'top',
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+            });
         } finally {
             setLoading(prevState => !prevState);
         }

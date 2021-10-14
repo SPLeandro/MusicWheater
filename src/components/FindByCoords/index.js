@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import { VStack, FormControl, FormLabel, InputGroup, Input, InputLeftAddon, Button } from "@chakra-ui/react";
+import { VStack, FormControl, FormLabel, InputGroup, Input, InputLeftAddon, Button, useToast } from "@chakra-ui/react";
 import { useMusic } from "../../providers";
 import { getWheaterByGeoCoords, searchPlaylists } from '../../services';   
 
 export const FindByCoords = () => {
 
+    const toast = useToast();
     const {setLastSearch} = useMusic();
 
     const [loading, setLoading] = useState(false);
@@ -25,7 +26,14 @@ export const FindByCoords = () => {
                 ...playlist
             }); 
         } catch (error){
-            console.log(error);
+            toast({
+                title: 'Houve um problema',
+                description: error.message || 'Erro não especificado',
+                position: 'top',
+                status: "error",isClosable: true,
+                duration: 5000,
+                isClosable: true,
+            });
         } finally {
             setLoading(prevState => !prevState);
         }

@@ -18,7 +18,7 @@ export const getWheaterByCityName = async (city_name, state, country) => {
         const response = await wheaterApi.get(`/weather?${params}`);
         return response.data;
     } catch (error){
-        return error;
+        throw error.response.data;
     }
 }
 
@@ -28,7 +28,7 @@ export const getWheaterByCityId = async (city_id) => {
         const response = await wheaterApi.get(`/weather?${params}`);
         return response.data;
     } catch (error){
-        return error;
+        throw error.response.data;
     }
 }
 
@@ -38,7 +38,7 @@ export const getWheaterByGeoCoords = async (lat, long) => {
         const response = await wheaterApi.get(`/weather?${params}`);
         return response.data;
     } catch (error){
-        return error;
+        throw error.response.data;
     }
 }
 
@@ -49,6 +49,6 @@ export const getWheaterByZipCode = async (zipcode, uf) => {
         const response = await wheaterApi.get(`/weather?${params}`);
         return response.data;
     } catch (error){
-        return error;
+        throw error.response.data;
     }
 }

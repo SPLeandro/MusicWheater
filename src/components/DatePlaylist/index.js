@@ -1,19 +1,36 @@
 import React, { useState } from 'react';
-import { Box, VStack, Divider, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Heading, Text, Button } from '@chakra-ui/react';
+import { Box, VStack, Divider, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Heading, Text, Button, useToast } from '@chakra-ui/react';
 import { MusicItem } from '../MusicItem';
 import { useMusic  } from '../../providers';
 
 export const DatePlaylist = ({date}) => {
 
-    const [loading, setLoading] = useState(false);
+    const toast = useToast();
     const {removePlaylist} = useMusic();
+
+    const [loading, setLoading] = useState(false);
 
     const handleRemovePlaylist = async (playlist) => {
         try {
             setLoading(prevState => !prevState);
             await removePlaylist(playlist);
+            toast({
+                title: 'Sucesso',
+                description: 'Playlist deletada com sucesso!',
+                position: 'top',
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+            });
         } catch (error) {
-            console.log(error);
+            toast({
+                title: 'Houve um problema',
+                description: error.message || 'Erro não especificado',
+                position: 'top',
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+            });
         } finally {
             setLoading(prevState => !prevState);
         }

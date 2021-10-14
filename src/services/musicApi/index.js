@@ -37,6 +37,6 @@ export const searchPlaylists = async (temp) => {
         const tracks = response.data.tracks?.map(track => { return {key: track.key, title: track.title, subtitle: track.subtitle, url: track.url, images: track.images}})
         return { genre, tracks };
     } catch (error){
-        throw error;
+        throw {cod: error.response.status, message: error.response.data};
     }
 }
